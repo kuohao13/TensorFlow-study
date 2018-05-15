@@ -1,6 +1,7 @@
 #coding:utf-8
 import tensorflow as tf
 import numpy as np
+import matplotlib.pyplot as plt
 #1层10个神经元的拟合一元二次函数的简单列子
 # 输入层1个、隐藏层10个、输出层1个的神经网络
 def add_layer(input_data,in_size,out_size,activation_function=None):
@@ -42,11 +43,25 @@ init=tf.global_variables_initializer()
 sess=tf.Session()
 sess.run(init)
 
+#可视化
+fig=plt.figure()
+ax=fig.add_subplot(1,1,1)
+ax.scatter(x_data,y_data)
+plt.ion()#保持图形自己下一步，不用卡着手工点
+plt.show()
+
 #训练
 for i in range(1000):
     sess.run(train_step,feed_dict={xs:x_data,ys:y_data})
     if i% 50 ==0:
         # 每50步我们输出一下机器学习的误差
-        print("now,run in:%s,loss is %s"%(i,sess.run(loss,feed_dict={xs:x_data,ys:y_data})))
+        #print("now,run in:%s,loss is %s"%(i,sess.run(loss,feed_dict={xs:x_data,ys:y_data})))
+        try:
+            ax.lines.remove(lines[0]) #删除上一条
+        except Exception:
+            pass
+        prediction_value=sess.run(prediction,feed_dict={xs:x_data})
+        lines=ax.plot(x_data,prediction_value,'-r',lw=5)
+        plt.pause(0.1)
 
 
