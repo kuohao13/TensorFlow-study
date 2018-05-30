@@ -5,20 +5,6 @@
 #两个卷积层，1个全连接层，最后用一个softmax
 import tensorflow as tf
 import numpy as np
-def add_layer(inputs, in_size, out_size, activation_function=None):
-    # add one more layer and return the output of this layer
-    with tf.name_scope('layer'):
-        with tf.name_scope('weights'):
-            Weights = tf.Variable(tf.truncated_normal([in_size, out_size], stddev=0.1), name='W')
-        with tf.name_scope('biases'):
-            biases = tf.Variable(tf.zeros([1, out_size]) + 0.1, name='b')
-        with tf.name_scope('Wx_plus_b'):
-            Wx_plus_b = tf.add(tf.matmul(inputs, Weights), biases)
-        if activation_function is None:
-            outputs = Wx_plus_b
-        else:
-            outputs = activation_function(Wx_plus_b, )
-        return outputs
 def compute_accuraty(v_xs,v_ys):
     global prediction
     y_pre=sess.run(prediction,feed_dict={xs: v_xs, keep_prob:1})
